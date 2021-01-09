@@ -1,15 +1,11 @@
 import json
 
 from annoying.functions import get_object_or_None
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import ValidationError
 from django.http.response import JsonResponse
-from django.shortcuts import render
 from django.views import View
-from django.views.decorators.csrf import csrf_exempt
 
 from brownie.interview_request.models import Users, Company, InterviewRequest, JobProfile, TypeformWebhookData
-from brownie.utils import tasks
 
 
 class TypeformWebhookView(View):
@@ -50,10 +46,6 @@ class TypeformWebhookView(View):
                                                         type_form_id=data['id'],
                                                         interview_request_id=interview_request.id)
             typeform_webhook_data.save()
-
-            # use celery for fast response
-            # tasks.execute_interview_request.delay(interview_request.id)
-
             return JsonResponse({'message': 'Received successfully.'})
         except Exception as e:
             print("Error", e)

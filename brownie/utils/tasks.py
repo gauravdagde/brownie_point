@@ -21,10 +21,11 @@
 # from brownie.interview_request.models import InterviewRequest
 #
 # color = sns.color_palette()
-# %matplotlib inline
+# from IPython import get_ipython
+#
+# get_ipython().run_line_magic('matplotlib', 'inline')
 # import plotly.offline as py
 #
-# py.init_notebook_mode(connected=True)
 # import plotly.graph_objs as go
 # import plotly.tools as tls
 # import plotly.express as px

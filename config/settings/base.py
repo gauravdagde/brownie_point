@@ -65,7 +65,7 @@ DJANGO_APPS = [
 ]
 THIRD_PARTY_APPS = [
     "crispy_forms",
-    "django_celery_beat",
+    "django_crontab",
 ]
 
 LOCAL_APPS = [
