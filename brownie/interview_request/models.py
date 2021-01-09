@@ -14,7 +14,7 @@ from django.utils import timezone
 from django.contrib.postgres.fields import JSONField
 
 
-class Users(models.Model):
+class User(models.Model):
     id = models.AutoField(primary_key=True)
     email = models.CharField(max_length=100, unique=True)
     first_name = models.CharField(max_length=100)
@@ -54,7 +54,7 @@ class InterviewRequest(models.Model):
     id = models.AutoField(primary_key=True)
     type_form_id = models.CharField(max_length=20)
     company = models.ForeignKey('Company', on_delete=models.CASCADE, null=False)
-    user = models.ForeignKey('Users', on_delete=models.CASCADE, null=False)
+    user = models.ForeignKey('User', on_delete=models.CASCADE, null=False)
     job_profile = models.ForeignKey('JobProfile', on_delete=models.CASCADE, null=False)
     is_visited_by_cron = models.BooleanField(default=False)
     created_on = models.DateTimeField(default=timezone.now)
@@ -72,7 +72,7 @@ class InterviewRequestResult(models.Model):
     is_published = models.BooleanField(default=False)
     interview_request = models.ForeignKey('InterviewRequest', on_delete=models.CASCADE)
     company = models.ForeignKey('Company', on_delete=models.CASCADE)
-    user = models.ForeignKey('Users', on_delete=models.CASCADE)
+    user = models.ForeignKey('User', on_delete=models.CASCADE)
     created_on = models.DateTimeField(default=timezone.now)
     modified_on = models.DateTimeField(default=timezone.now)
 

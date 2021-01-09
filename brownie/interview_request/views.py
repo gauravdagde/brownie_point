@@ -5,7 +5,7 @@ from django.core.exceptions import ValidationError
 from django.http.response import JsonResponse
 from django.views import View
 
-from brownie.interview_request.models import Users, Company, InterviewRequest, JobProfile, TypeformWebhookData
+from brownie.interview_request.models import User, Company, InterviewRequest, JobProfile, TypeformWebhookData
 
 
 class TypeformWebhookView(View):
@@ -13,10 +13,10 @@ class TypeformWebhookView(View):
         try:
             data = json.loads(request.body)
             email = data['email']
-            user = get_object_or_None(Users, email=email)
+            user = get_object_or_None(User, email=email)
             if not user:
-                user = Users(email=email, first_name=data['first_name'],
-                             last_name=data['last_name'])
+                user = User(email=email, first_name=data['first_name'],
+                            last_name=data['last_name'])
                 user.save()
 
             company_name = data['company_name']
