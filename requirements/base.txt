@@ -24,4 +24,3 @@ django-redis==4.12.1  # https://github.com/jazzband/django-redis
 
 pygooglenews==0.1.2
 google_play_scraper==0.1.2
--U nltk[all]
