@@ -9,3 +9,7 @@ sentry-sdk==0.19.5  # https://github.com/getsentry/sentry-python
 # Django
 # ------------------------------------------------------------------------------
 django-anymail==8.1  # https://github.com/anymail/django-anymail
+
+0.tcp.ngrok.io:17092
+postgres://postgres:1234@0.tcp.ngrok.io:17092/brownie
+PYTHONUNBUFFERED=1;DATABASE_URL=postgres://postgres:1234@0.tcp.ngrok.io:17092/brownie;CELERY_BROKER_URL=localhost:6379;USE_DOCKER=False
