@@ -463,6 +463,10 @@ def execute_interview_request():
             post_log(f"Email sending for the user : {user_name}", 'COMPLETED')
             # terminating the session
             s.quit()
+
+            # updating object value
+            ir_object.is_visited_by_cron = True
+            ir_object.save()
         except Exception as e:
             df.to_csv(f'{company_name}_all_reviews.csv')
             traceback.print_exc()
