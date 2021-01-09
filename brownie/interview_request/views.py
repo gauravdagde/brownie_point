@@ -7,11 +7,30 @@ from django.views import View
 
 from brownie.interview_request.models import User, Company, InterviewRequest, JobProfile, TypeformWebhookData
 
+field_mapping_dict = {
+    '9129320': 'first_name',
+    '7Yu2iCMEfpBT': 'last_name',
+    'mDjKcHAvbZmq': 'email',
+    'Vmo2TlXAsJ4h': 'company_name',
+    'wjr77EnQTSlL': 'job_profile',
+}
+
 
 class TypeformWebhookView(View):
     def post(self, request):
         try:
-            data = json.loads(request.body)
+            payload = json.loads(request.body)
+            form_response = payload['form_response']
+            data = {}
+            for answer in form_response['answers']:
+                text = ''
+                if answer['type'] == 'text':
+                    text = answer['text']
+                elif answer['type'] == 'choice':
+                    text = answer['choice']['label']
+                elif answer['type'] == 'email':
+                    text = answer['email']
+                data[field_mapping_dict[answer['field']['id']]] = text
             email = data['email']
             user = get_object_or_None(User, email=email)
             if not user:
@@ -31,19 +50,20 @@ class TypeformWebhookView(View):
                 job_profile = JobProfile(name=job_profile_title)
                 job_profile.save()
 
-            interview_request = get_object_or_None(InterviewRequest, type_form_id=data['id'],
+            typeform_id = form_response['form_id']
+            interview_request = get_object_or_None(InterviewRequest, type_form_id=typeform_id,
                                                    company_id=company.id,
                                                    user_id=user.id,
                                                    job_profile_id=job_profile.id)
             if not interview_request:
-                interview_request = InterviewRequest(type_form_id=data['id'],
+                interview_request = InterviewRequest(type_form_id=typeform_id,
                                                      company_id=company.id,
                                                      user_id=user.id,
                                                      job_profile_id=job_profile.id)
                 interview_request.save()
 
-            typeform_webhook_data = TypeformWebhookData(data=data,
-                                                        type_form_id=data['id'],
+            typeform_webhook_data = TypeformWebhookData(data=payload,
+                                                        type_form_id=typeform_id,
                                                         interview_request_id=interview_request.id)
             typeform_webhook_data.save()
             return JsonResponse({'message': 'Received successfully.'})
