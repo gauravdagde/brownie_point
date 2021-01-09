@@ -6,10 +6,6 @@ set -o nounset
 
 
 
-# N.B. If only .env files supported variable expansion...
-export CELERY_BROKER_URL="${REDIS_URL}"
-
-
 if [ -z "${POSTGRES_USER}" ]; then
     base_postgres_image_default_user='postgres'
     export POSTGRES_USER="${base_postgres_image_default_user}"
@@ -42,4 +38,7 @@ until postgres_ready; do
 done
 >&2 echo 'PostgreSQL is available'
 
-exec "$@"
+python /app/manage.py collectstatic --noinput
+
+/usr/local/bin/gunicorn config.asgi --bind 0.0.0.0:5000 --chdir=/app -k uvicorn.workers.UvicornWorker
+

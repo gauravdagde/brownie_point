@@ -2,6 +2,12 @@
 FROM python:3.8-slim-buster
 
 ENV PYTHONUNBUFFERED 1
+ENV POSTGRES_DB=defaultdb
+ENV POSTGRES_USER=doadmin
+ENV POSTGRES_PASSWORD=htg748qxfybg47vl
+ENV POSTGRES_HOST=db-postgresql-nyc1-43047-do-user-8492546-0.b.db.ondigitalocean.com
+ENV POSTGRES_PORT=25060
+ENV USE_DOCKER=yes
 
 RUN apt-get update \
   # dependencies for building Python packages
@@ -30,19 +36,6 @@ RUN chmod +x /entrypoint
 COPY --chown=django:django ./compose/production/django/start /start
 RUN sed -i 's/\r$//g' /start
 RUN chmod +x /start
-COPY --chown=django:django ./compose/production/django/celery/worker/start /start-celeryworker
-RUN sed -i 's/\r$//g' /start-celeryworker
-RUN chmod +x /start-celeryworker
-
-
-COPY --chown=django:django ./compose/production/django/celery/beat/start /start-celerybeat
-RUN sed -i 's/\r$//g' /start-celerybeat
-RUN chmod +x /start-celerybeat
-
-
-COPY ./compose/production/django/celery/flower/start /start-flower
-RUN sed -i 's/\r$//g' /start-flower
-RUN chmod +x /start-flower
 COPY --chown=django:django . /app
 
 USER django
