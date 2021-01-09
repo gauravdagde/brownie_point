@@ -11,7 +11,7 @@ SECRET_KEY = env(
     default="pniHATQTJP6k8jaz40J0Ukn4ijR5dltX8FBy4JKQ6VcnRSSp9cxLlLWyuC3VuoGz",
 )
 # https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = ["localhost", "0.0.0.0", "127.0.0.1", "45.55.38.44"]
+ALLOWED_HOSTS = [env("ALLOWED_HOST", default="https://gbrownie-point-tx6wl.ondigitalocean.app")]
 
 # CACHES
 # ------------------------------------------------------------------------------
