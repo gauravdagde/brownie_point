@@ -36,4 +36,6 @@ USER django
 
 WORKDIR /app
 
+RUN apt-get install -y cron
+
 ENTRYPOINT ["/entrypoint"]
