@@ -10,6 +10,10 @@ RUN apt-get update \
   && apt-get install -y libpq-dev \
   # Translations dependencies
   && apt-get install -y gettext \
+  # Translations dependencies
+  && apt-get -y install sudo \
+  # Translations dependencies
+  && apt-get -y install cron \
   # cleaning up unused files
   && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
   && rm -rf /var/lib/apt/lists/*
@@ -35,7 +39,5 @@ COPY --chown=django:django . /app
 USER django
 
 WORKDIR /app
-
-RUN apt-get install -y cron
 
 ENTRYPOINT ["/entrypoint"]
