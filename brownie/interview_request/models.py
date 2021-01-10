@@ -26,6 +26,9 @@ class User(models.Model):
         managed = True
         db_table = 'users'
 
+    def __str__(self): 
+        return "{} {}".format(self.first_name, self.last_name)
+
 
 class Company(models.Model):
     id = models.AutoField(primary_key=True)
@@ -38,6 +41,9 @@ class Company(models.Model):
         managed = True
         db_table = 'company'
 
+    def __str__(self): 
+        return "{}".format(self.name)
+
 
 class JobProfile(models.Model):
     id = models.AutoField(primary_key=True)
@@ -48,6 +54,9 @@ class JobProfile(models.Model):
     class Meta:
         managed = True
         db_table = 'job_profile'
+
+    def __str__(self): 
+        return "{}".format(self.name)
 
 
 class InterviewRequest(models.Model):
@@ -63,6 +72,9 @@ class InterviewRequest(models.Model):
     class Meta:
         managed = True
         db_table = 'interview_request'
+
+    def __str__(self): 
+        return "{} {}: {}".format(self.user.email, self.company.name, self.is_visited_by_cron)
 
 
 class InterviewRequestResult(models.Model):
@@ -80,6 +92,9 @@ class InterviewRequestResult(models.Model):
     class Meta:
         managed = True
         db_table = 'interview_request_result'
+
+    def __str__(self): 
+        return "{} {}: {}".format(self.user.email, self.company.name, self.is_published)
 
 
 class TypeformWebhookData(models.Model):
