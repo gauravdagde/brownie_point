@@ -13,6 +13,7 @@ from email.mime.text import MIMEText
 
 import matplotlib.pyplot as plt
 import pandas as pd
+import plotly
 import plotly.express as px
 import requests
 from IPython.display import HTML
@@ -255,6 +256,7 @@ def execute_interview_request(ir_object):
             # print(df.head())
             # Product Scores
             post_log(f"Histogram creation for the app reviews for {user_email}", 'STARTED')
+            plotly.config.use_xvfb = True
             fig = px.histogram(df, x="score")
             fig.update_traces(marker_color="turquoise", marker_line_color='rgb(8,48,107)',
                               marker_line_width=1.5)
