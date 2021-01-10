@@ -146,7 +146,6 @@ def get_quotes_from_html_text(string_with_quotes):
     return list_of_quotes
 
 
-@celery_app.task(queue='execute-interview-request-task')
 def execute_interview_request(ir_id: int):
     LOGGER.info(f'[tag:INTRUNTER10] tasks.execute_interview_request: received execute request for ir_id: {ir_id}')
 
@@ -495,7 +494,7 @@ def execute_interview_request(ir_id: int):
         )
         irr_object.save()
     except Exception as e:
-        df.to_csv(f'{company_name}_all_reviews.csv')
+        # df.to_csv(f'{company_name}_all_reviews.csv')
         # traceback.print_exc()
         post_log(f"{e} : for user : {user_name}", "ERROR")
         irr_object = InterviewRequestResult(
@@ -503,7 +502,7 @@ def execute_interview_request(ir_id: int):
             is_published=False,
             interview_request_id=ir_object.id,
             company_id=ir_object.company.id,
-            user=ir_object.user.id,
+            user_id=ir_object.user.id,
             data=result_data,
         )
         irr_object.save()

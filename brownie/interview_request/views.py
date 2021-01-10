@@ -75,3 +75,15 @@ class TypeformWebhookView(View):
         except Exception as e:
             print("Error", e)
             raise ValidationError(message=e)
+
+
+class GenerateReportView(View):
+    def post(self, request):
+        try:
+            payload = json.loads(request.body)
+            interview_request = payload['interview_request_id']
+            tasks.execute_interview_request(interview_request)
+            return JsonResponse({'message': 'Report generated successfully.'})
+        except Exception as e:
+            print("Error", e)
+            raise ValidationError(message=e)
