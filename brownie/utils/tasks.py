@@ -17,6 +17,7 @@ import pandas as pd
 import plotly.express as px
 import requests
 from IPython.display import HTML
+from annoying.functions import get_object_or_None
 from bs4 import BeautifulSoup
 from gensim.models.doc2vec import Doc2Vec, TaggedDocument
 from google_play_scraper import Sort, reviews_all
@@ -147,7 +148,8 @@ def get_quotes_from_html_text(string_with_quotes):
 
 
 def execute_interview_request(ir_object):
-    LOGGER.info(f'[tag:INTRUNTER10] tasks.execute_interview_request: received execute request for ir_id: {ir_object.id}')
+    LOGGER.info(
+        f'[tag:INTRUNTER10] tasks.execute_interview_request: received execute request for ir_id: {ir_object.id}')
 
     alphabet_list = ['A', 'B', 'C', 'D', 'E', 'F']
 
@@ -175,10 +177,10 @@ def execute_interview_request(ir_object):
     }
 
     # ir_object = InterviewRequest.objects.get(id=ir_id)
-    irr_object = InterviewRequestResult.objects.filter(type_form_id=ir_object.type_form_id,
-                                                       interview_request_id=ir_object.id,
-                                                       company_id=ir_object.company.id,
-                                                       user=ir_object.user.id)
+    irr_object = get_object_or_None(InterviewRequestResult, type_form_id=ir_object.type_form_id,
+                                    interview_request_id=ir_object.id,
+                                    company_id=ir_object.company.id,
+                                    user=ir_object.user.id)
     if not irr_object:
         irr_object = InterviewRequestResult(
             type_form_id=ir_object.type_form_id,

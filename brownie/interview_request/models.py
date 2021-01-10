@@ -73,7 +73,7 @@ class InterviewRequestResult(models.Model):
     interview_request = models.ForeignKey('InterviewRequest', on_delete=models.CASCADE)
     company = models.ForeignKey('Company', on_delete=models.CASCADE)
     user = models.ForeignKey('User', on_delete=models.CASCADE)
-    data = JSONField()
+    data = JSONField(default=dict(), null=True)
     created_on = models.DateTimeField(default=timezone.now)
     modified_on = models.DateTimeField(default=timezone.now)
 
