@@ -28,6 +28,4 @@ RUN chmod +x /start
 
 WORKDIR /app
 
-RUN apt-get install -y cron
-
 ENTRYPOINT ["/entrypoint"]
