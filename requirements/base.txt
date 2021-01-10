@@ -24,3 +24,12 @@ django-redis==4.12.1  # https://github.com/jazzband/django-redis
 
 pygooglenews==0.1.2
 google_play_scraper==0.1.2
+django-anymail==8.1  # https://github.com/anymail/django-anymail
+django-annoying==0.10.6
+django-crontab==0.7.1
+django_extensions==3.1.0
+
+# data manipulation libraries
+nltk[all]
+pandas==1.2.0
+wordcloud==1.8.1
