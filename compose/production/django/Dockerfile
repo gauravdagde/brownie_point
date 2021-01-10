@@ -18,11 +18,11 @@ RUN apt-get update \
   && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
   && rm -rf /var/lib/apt/lists/*
 
-RUN addgroup --system django \
-    && adduser --system --ingroup django django
-
 ADD crontab /etc/cron.d/crontab
 RUN chmod 0644 /etc/cron.d/crontab
+
+RUN addgroup --system django \
+    && adduser --system --ingroup django django
 
 # Requirements are installed here to ensure they will be cached.
 COPY ./requirements /requirements
