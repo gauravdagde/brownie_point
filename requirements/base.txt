@@ -29,3 +29,4 @@ django-annoying==0.10.6
 django-crontab==0.7.1
 django_extensions==3.1.0
 ipython==7.19.0
+apscheduler==3.6.3

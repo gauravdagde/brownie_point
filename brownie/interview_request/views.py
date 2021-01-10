@@ -6,7 +6,6 @@ from django.http.response import JsonResponse
 from django.views import View
 
 from brownie.interview_request.models import User, Company, InterviewRequest, JobProfile, TypeformWebhookData
-from brownie.utils import tasks
 
 field_mapping_dict = {
     '9129320': 'first_name',
@@ -87,8 +86,8 @@ class GenerateReportView(View):
         try:
             payload = json.loads(request.body)
             interview_request = payload['interview_request_id']
-            tasks.execute_interview_request(interview_request)
-            return JsonResponse({'message': 'Report generated successfully.'})
+            # tasks.execute_interview_request(interview_request)
+            return JsonResponse({'message': 'Not supported now, deprecated this'})
         except Exception as e:
             print("Error", e)
             raise ValidationError(message=e)
