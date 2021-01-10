@@ -26,14 +26,14 @@ class User(models.Model):
         managed = True
         db_table = 'users'
 
-    def __str__(self): 
+    def __str__(self):
         return "{} {}".format(self.first_name, self.last_name)
 
 
 class Company(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=20)
-    google_play_app_id = models.CharField(max_length=20, null=True, default=None)
+    google_play_app_id = models.CharField(max_length=100, null=True, default=None)
     created_on = models.DateTimeField(default=timezone.now)
     modified_on = models.DateTimeField(default=timezone.now)
 
@@ -41,7 +41,7 @@ class Company(models.Model):
         managed = True
         db_table = 'company'
 
-    def __str__(self): 
+    def __str__(self):
         return "{}".format(self.name)
 
 
@@ -55,7 +55,7 @@ class JobProfile(models.Model):
         managed = True
         db_table = 'job_profile'
 
-    def __str__(self): 
+    def __str__(self):
         return "{}".format(self.name)
 
 
@@ -73,7 +73,7 @@ class InterviewRequest(models.Model):
         managed = True
         db_table = 'interview_request'
 
-    def __str__(self): 
+    def __str__(self):
         return "{} {}: {}".format(self.user.email, self.company.name, self.is_visited_by_cron)
 
 
@@ -93,7 +93,7 @@ class InterviewRequestResult(models.Model):
         managed = True
         db_table = 'interview_request_result'
 
-    def __str__(self): 
+    def __str__(self):
         return "{} {}: {}".format(self.user.email, self.company.name, self.is_published)
 
 
@@ -108,3 +108,6 @@ class TypeformWebhookData(models.Model):
     class Meta:
         managed = True
         db_table = 'typeform_webhook_data'
+
+    def __str__(self):
+        return "{} : {}-{}".format(self.type_form_id, self.interview_request.user.email, self.interview_request.company.name)
