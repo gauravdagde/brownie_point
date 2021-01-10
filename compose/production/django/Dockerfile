@@ -2,6 +2,12 @@
 FROM python:3.8-slim-buster
 
 ENV PYTHONUNBUFFERED 1
+ENV POSTGRES_DB=defaultdb
+ENV POSTGRES_USER=doadmin
+ENV POSTGRES_PASSWORD=htg748qxfybg47vl
+ENV POSTGRES_HOST=db-postgresql-nyc1-43047-do-user-8492546-0.b.db.ondigitalocean.com
+ENV POSTGRES_PORT=25060
+ENV USE_DOCKER=yes
 
 RUN apt-get update \
   # dependencies for building Python packages
