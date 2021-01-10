@@ -33,3 +33,4 @@ apscheduler==3.6.3
 django-admin-tools==0.9.0
 django-adminactions==1.9
 play-scraper==0.6.0
+psutil==5.8.0
