@@ -4,7 +4,7 @@ set -o errexit
 set -o pipefail
 set -o nounset
 
-
+echo 'in entrypoint'
 
 if [ -z "${POSTGRES_USER}" ]; then
     base_postgres_image_default_user='postgres'

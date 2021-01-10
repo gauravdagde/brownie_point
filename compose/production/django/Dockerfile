@@ -36,10 +36,10 @@ COPY --chown=django:django . /app
 
 WORKDIR /app
 
-ENV DATABASE_URL="postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}"
+#ENV DATABASE_URL="postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}"
 
-RUN python /app/manage.py collectstatic --noinput
+#RUN python /app/manage.py collectstatic --noinput
 
-RUN /usr/local/bin/gunicorn config.wsgi --bind 0.0.0.0:5000 --chdir=/app
+#RUN /usr/local/bin/gunicorn config.wsgi --bind 0.0.0.0:5000 --chdir=/app
 
-#ENTRYPOINT ["/entrypoint"]
+ENTRYPOINT ["/entrypoint"]
