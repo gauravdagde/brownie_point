@@ -252,7 +252,7 @@ def execute_interview_request(ir_object):
             post_log(f"Srapping reviews for the app for {user_email}", 'COMPLETED')
 
             df = pd.DataFrame(result)
-            # df = pd.read_csv('/app/Netflix_all_reviews.csv')
+            # df = pd.read_csv('/app/mail_content/Netflix_all_reviews.csv')
             # print(df.head())
             # Product Scores
             post_log(f"Histogram creation for the app reviews for {user_email}", 'STARTED')
@@ -444,12 +444,12 @@ def execute_interview_request(ir_object):
         for attach_file in attachment_file_list:
             # open the file to be sent
             # filename = file_name
-            attachment = open(f'/app/{attach_file}', "rb")
+            attachment = open(f'/app/mail_content/{attach_file}', "rb")
             # to add an attachment is just add a MIMEBase object to read a picture locally.
             post_log(f"filename : {attach_file}", "IN_PROGRESS")
             if '.png' in attach_file:
                 # post_log(f"In PNG block", "IN_PROGRESS")
-                # with open(f'/app/{attach_file}', 'rb') as attachment:
+                # with open(f'/app/mail_content/{attach_file}', 'rb') as attachment:
                 # set attachment mime and file name, the image type is png
                 mime = MIMEBase('image', 'png', filename=attach_file)
                 # add required header data:
