@@ -6,6 +6,7 @@ from django.http.response import JsonResponse
 from django.views import View
 
 from brownie.interview_request.models import User, Company, InterviewRequest, JobProfile, TypeformWebhookData
+from brownie.utils.tasks import get_google_play_store_app_id
 
 field_mapping_dict = {
     '9129320': 'first_name',
@@ -47,6 +48,11 @@ class TypeformWebhookView(View):
             company = get_object_or_None(Company, name=company_name)
             if not company:
                 company = Company(name=company_name)
+                company.save()
+
+            google_play_store_app_id = get_google_play_store_app_id(company_name)
+            if google_play_store_app_id:
+                company.google_play_app_id = google_play_store_app_id
                 company.save()
 
             job_profile_title = data['job_profile']

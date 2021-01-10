@@ -511,3 +511,11 @@ def execute_interview_request(ir_object):
         irr_object.save()
 
     LOGGER.info(f'[tag:INTRUNTER20] tasks.execute_interview_request: finished execution for ir_id: {ir_object.id}')
+
+
+def get_google_play_store_app_id(name: str):
+    import play_scraper
+    result = play_scraper.search(name.lower(), page=1)
+    for app in result:
+        if name in app['app_id']:
+            return app['app_id']
