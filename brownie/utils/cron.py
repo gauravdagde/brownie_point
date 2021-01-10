@@ -1,43 +1,17 @@
-import json
 import logging
-# from pygooglenews import GoogleNews
 import re
-# libraries to be imported
-import smtplib
 import string
-import traceback
 from datetime import datetime, timezone
-from email import encoders
-from email.mime.base import MIMEBase
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
 
 import matplotlib.pyplot as plt
-import nltk
-import pandas as pd
-import plotly.express as px
-import requests
-import seaborn as sns
-from IPython.display import HTML
-from bs4 import BeautifulSoup
-from gensim.models.doc2vec import Doc2Vec, TaggedDocument
-from google_play_scraper import Sort, reviews_all
 from nltk import pos_tag
 from nltk.corpus import stopwords
 from nltk.corpus import wordnet
-from nltk.sentiment.vader import SentimentIntensityAnalyzer
 from nltk.stem import WordNetLemmatizer
-from sklearn.feature_extraction.text import TfidfVectorizer
 from wordcloud import WordCloud
 
-from brownie.interview_request.models import InterviewRequest, InterviewRequestResult
-
-# from IPython import get_ipython
+from brownie.interview_request.models import InterviewRequest
 from brownie.utils.tasks import execute_interview_request
-
-color = sns.color_palette()
-
-# get_ipython().run_line_magic('matplotlib', 'inline')
 
 LOGGER = logging.getLogger('apps.runs.tasks')
 
