@@ -17,6 +17,11 @@ field_mapping_dict = {
 }
 
 
+class HealthCheckView(View):
+    def get(self, request):
+        return JsonResponse({'message': 'Healthy host'})
+
+
 class TypeformWebhookView(View):
     def post(self, request):
         try:
