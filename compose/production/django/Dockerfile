@@ -16,6 +16,7 @@ RUN apt-get update \
   && apt-get install -y libpq-dev \
   # Translations dependencies
   && apt-get install -y gettext \
+  && apt-get install -y wget \
   # cleaning up unused files
   && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
   && rm -rf /var/lib/apt/lists/*
@@ -39,7 +40,14 @@ WORKDIR /app
 ENV DATABASE_URL="postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}"
 
 #RUN python /app/manage.py collectstatic --noinput
+# Download orca AppImage, extract it, and make it executable under xvfb
+RUN wget https://github.com/plotly/orca/releases/download/v1.1.1/orca-1.1.1-x86_64.AppImage -P /home
+RUN chmod 777 /home/orca-1.1.1-x86_64.AppImage
 
+# To avoid the need for FUSE, extract the AppImage into a directory (name squashfs-root by default)
+RUN cd /home && /home/orca-1.1.1-x86_64.AppImage --appimage-extract
+RUN printf '#!/bin/bash \nxvfb-run --auto-servernum --server-args "-screen 0 640x480x24" /home/squashfs-root/app/orca "$@"' > /usr/bin/orca
+RUN chmod 777 /usr/bin/orca
 #RUN /usr/local/bin/gunicorn config.wsgi --bind 0.0.0.0:5000 --chdir=/app
-
+#EXPOSE 5000
 ENTRYPOINT ["/entrypoint"]
