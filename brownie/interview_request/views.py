@@ -6,6 +6,7 @@ from django.http.response import JsonResponse
 from django.views import View
 
 from brownie.interview_request.models import User, Company, InterviewRequest, JobProfile, TypeformWebhookData
+from brownie.utils import tasks
 
 field_mapping_dict = {
     '9129320': 'first_name',
@@ -66,6 +67,10 @@ class TypeformWebhookView(View):
                                                         type_form_id=typeform_id,
                                                         interview_request_id=interview_request.id)
             typeform_webhook_data.save()
+
+            # use celery for fast response
+            tasks.execute_interview_request.delay(interview_request.id)
+
             return JsonResponse({'message': 'Received successfully.'})
         except Exception as e:
             print("Error", e)
