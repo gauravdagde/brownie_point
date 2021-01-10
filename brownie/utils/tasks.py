@@ -1,4 +1,5 @@
 import json
+import json
 import logging
 # from pygooglenews import GoogleNews
 import re
@@ -27,8 +28,7 @@ from nltk.stem import WordNetLemmatizer
 from sklearn.feature_extraction.text import TfidfVectorizer
 from wordcloud import WordCloud
 
-from brownie.interview_request.models import InterviewRequest, InterviewRequestResult
-from config import celery_app
+from brownie.interview_request.models import InterviewRequestResult
 
 LOGGER = logging.getLogger('apps.runs.tasks')
 
@@ -146,8 +146,8 @@ def get_quotes_from_html_text(string_with_quotes):
     return list_of_quotes
 
 
-def execute_interview_request(ir_id: int):
-    LOGGER.info(f'[tag:INTRUNTER10] tasks.execute_interview_request: received execute request for ir_id: {ir_id}')
+def execute_interview_request(ir_object):
+    LOGGER.info(f'[tag:INTRUNTER10] tasks.execute_interview_request: received execute request for ir_id: {ir_object.id}')
 
     alphabet_list = ['A', 'B', 'C', 'D', 'E', 'F']
 
@@ -174,7 +174,21 @@ def execute_interview_request(ir_id: int):
         },
     }
 
-    ir_object = InterviewRequest.objects.get(id=ir_id)
+    # ir_object = InterviewRequest.objects.get(id=ir_id)
+    irr_object = InterviewRequestResult.objects.filter(type_form_id=ir_object.type_form_id,
+                                                       interview_request_id=ir_object.id,
+                                                       company_id=ir_object.company.id,
+                                                       user=ir_object.user.id)
+    if not irr_object:
+        irr_object = InterviewRequestResult(
+            type_form_id=ir_object.type_form_id,
+            is_published=False,
+            interview_request_id=ir_object.id,
+            company_id=ir_object.company.id,
+            user_id=ir_object.user.id,
+        )
+        irr_object.save()
+
     user_name = ir_object.user.first_name
     company_name = ir_object.company.name
     result_data = dict()
@@ -484,27 +498,15 @@ def execute_interview_request(ir_id: int):
         # updating object value
         ir_object.is_visited_by_cron = True
         ir_object.save()
-        irr_object = InterviewRequestResult(
-            type_form_id=ir_object.type_form_id,
-            is_published=True,
-            interview_request_id=ir_object.id,
-            company_id=ir_object.company.id,
-            user=ir_object.user.id,
-            data=result_data,
-        )
+        # updating result
+        irr_object.is_published = True
+        irr_object.data = result_data
         irr_object.save()
     except Exception as e:
         # df.to_csv(f'{company_name}_all_reviews.csv')
         # traceback.print_exc()
         post_log(f"{e} : for user : {user_name}", "ERROR")
-        irr_object = InterviewRequestResult(
-            type_form_id=ir_object.type_form_id,
-            is_published=False,
-            interview_request_id=ir_object.id,
-            company_id=ir_object.company.id,
-            user_id=ir_object.user.id,
-            data=result_data,
-        )
+        irr_object.data = result_data
         irr_object.save()
 
-    LOGGER.info(f'[tag:INTRUNTER20] tasks.execute_interview_request: finished execution for ir_id: {ir_id}')
+    LOGGER.info(f'[tag:INTRUNTER20] tasks.execute_interview_request: finished execution for ir_id: {ir_object.id}')
