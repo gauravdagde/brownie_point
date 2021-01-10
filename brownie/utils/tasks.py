@@ -1,5 +1,4 @@
 import json
-import json
 import logging
 # from pygooglenews import GoogleNews
 import re
@@ -32,7 +31,7 @@ from wordcloud import WordCloud
 from brownie.interview_request.models import InterviewRequestResult
 
 LOGGER = logging.getLogger('apps.runs.tasks')
-
+DEFAULT_PATH = '/app/mail_content'
 alphabet_list = ['A', 'B', 'C', 'D', 'E', 'F']
 
 tag_dict = {
@@ -81,7 +80,7 @@ def show_wordcloud(data, company_name, title=None):
 
     plt.imshow(wordcloud)
     # plt.show()
-    plt.savefig(f'{company_name}_wc_positive.png')
+    plt.savefig(f'{DEFAULT_PATH}/{company_name}_wc_positive.png')
     return f'{company_name}_wc_positive.png'
 
 
@@ -235,7 +234,7 @@ def execute_interview_request(ir_object):
         news_df.sort_values(by=['Date'], inplace=True, ascending=False)
         del news_df['Date']
         file_name = f'{company_name}_Scrapped News.csv'
-        news_df.to_csv(file_name)
+        news_df.to_csv(f'{DEFAULT_PATH}/{file_name}')
         post_log(f"File creation for the scrapped news for {user_email}", 'COMPLETED')
         attachment_file_list.append(file_name)
         google_play_app_id = ir_object.company.google_play_app_id
@@ -252,7 +251,7 @@ def execute_interview_request(ir_object):
             post_log(f"Srapping reviews for the app for {user_email}", 'COMPLETED')
 
             df = pd.DataFrame(result)
-            # df = pd.read_csv('/app/mail_content/Netflix_all_reviews.csv')
+            # df = pd.read_csv('{DEFAULT_PATH}/Netflix_all_reviews.csv')
             # print(df.head())
             # Product Scores
             post_log(f"Histogram creation for the app reviews for {user_email}", 'STARTED')
@@ -261,7 +260,7 @@ def execute_interview_request(ir_object):
                               marker_line_width=1.5)
             fig.update_layout(title_text='Product Score')
             HTML(fig.to_html())
-            fig.write_image(f"{company_name}_playstore_ratings.png")
+            fig.write_image(f"{DEFAULT_PATH}/{company_name}_playstore_ratings.png")
             attachment_file_list.append(f"{company_name}_playstore_ratings.png")
             post_log(f"Histogram creation for the app reviews for {user_email}", 'COMPLETED')
             reviews_df = df
@@ -327,7 +326,7 @@ def execute_interview_request(ir_object):
             post_log(f"Creating negative reviews csv for {user_name}", 'STARTED')
             negative_df = reviews_df[reviews_df["nb_words"] >= 5].sort_values("neg", ascending=False)[
                 ["content", "neg"]].head(50)
-            negative_df.to_csv(f'{company_name}_negative_reviews.csv', columns=["content"])
+            negative_df.to_csv(f'{DEFAULT_PATH}/{company_name}_negative_reviews.csv', columns=["content"])
             attachment_file_list.append(f'{company_name}_negative_reviews.csv')
             negative_reviews_data = negative_df.to_json(orient="split")
             parsed = json.loads(negative_reviews_data)
