@@ -2,12 +2,6 @@
 FROM python:3.8-slim-buster
 
 ENV PYTHONUNBUFFERED 1
-ENV POSTGRES_DB=defaultdb
-ENV POSTGRES_USER=doadmin
-ENV POSTGRES_PASSWORD=htg748qxfybg47vl
-ENV POSTGRES_HOST=db-postgresql-nyc1-43047-do-user-8492546-0.b.db.ondigitalocean.com
-ENV POSTGRES_PORT=25060
-ENV USE_DOCKER=yes
 
 RUN apt-get update \
   # dependencies for building Python packages
@@ -37,8 +31,6 @@ RUN chmod +x /entrypoint
 COPY --chown=django:django . /app
 
 WORKDIR /app
-
-ENV DATABASE_URL="postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}"
 
 #RUN python /app/manage.py collectstatic --noinput
 # Download orca AppImage, extract it, and make it executable under xvfb

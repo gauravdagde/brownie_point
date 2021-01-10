@@ -290,3 +290,6 @@ STATICFILES_FINDERS += ["compressor.finders.CompressorFinder"]
 
 # Your stuff...
 # ------------------------------------------------------------------------------
+GMAIL_PASSWORD = env(
+    "GMAIL_PASSWORD", default="None"
+)

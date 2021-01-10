@@ -1,6 +1,7 @@
 import json
 import logging
 # from pygooglenews import GoogleNews
+import os
 import re
 # libraries to be imported
 import smtplib
@@ -30,6 +31,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from wordcloud import WordCloud
 
 from brownie.interview_request.models import InterviewRequestResult
+from config.settings.base import GMAIL_PASSWORD
 
 LOGGER = logging.getLogger('apps.runs.tasks')
 DEFAULT_PATH = '/app/mail_content'
@@ -341,7 +343,7 @@ def execute_interview_request(ir_object):
 
         # Set Global Variables
         gmail_user = 'gbrowniepoint@gmail.com'
-        gmail_password = 'gagan@123'
+        gmail_password = GMAIL_PASSWORD
 
         fromaddr = "gbrowniepoint@gmail.com"
         toaddr = "gagan.gehani@gmail.com"
