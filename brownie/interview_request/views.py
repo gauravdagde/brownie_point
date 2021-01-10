@@ -74,7 +74,7 @@ class TypeformWebhookView(View):
             typeform_webhook_data.save()
 
             # use celery for fast response
-            tasks.execute_interview_request.delay(interview_request.id)
+            # tasks.execute_interview_request.delay(interview_request.id)
 
             return JsonResponse({'message': 'Received successfully.'})
         except Exception as e:
