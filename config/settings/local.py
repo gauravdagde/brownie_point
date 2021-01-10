@@ -4,14 +4,14 @@ from .base import env
 # GENERAL
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#debug
-DEBUG = True
+DEBUG = False
 # https://docs.djangoproject.com/en/dev/ref/settings/#secret-key
 SECRET_KEY = env(
     "DJANGO_SECRET_KEY",
     default="pniHATQTJP6k8jaz40J0Ukn4ijR5dltX8FBy4JKQ6VcnRSSp9cxLlLWyuC3VuoGz",
 )
 # https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = [env("ALLOWED_HOST", default="https://gbrownie-point-tx6wl.ondigitalocean.app")]
+ALLOWED_HOSTS = [env("ALLOWED_HOST", default="gbrownie-point-tx6wl.ondigitalocean.app")]
 
 # CACHES
 # ------------------------------------------------------------------------------
