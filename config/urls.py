@@ -10,6 +10,7 @@ urlpatterns = [
     path("", TemplateView.as_view(template_name="landing/index.html"), name="home"),
     # Django Admin, use {% url 'admin:index' %}
     path(settings.ADMIN_URL, admin.site.urls),
+    path(r'^adminactions/', include('adminactions.urls')),
     # User management
     path("interview_request/", include("brownie.interview_request.urls",  namespace="interview_request")),
     # Your stuff: custom urls includes go here
