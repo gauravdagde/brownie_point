@@ -17,3 +17,4 @@ django_extensions==3.1.0
 nltk[all]
 pandas==1.2.0
 wordcloud==1.8.1
+plotly==4.14.1

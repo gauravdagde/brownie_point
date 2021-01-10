@@ -28,8 +28,3 @@ django-anymail==8.1  # https://github.com/anymail/django-anymail
 django-annoying==0.10.6
 django-crontab==0.7.1
 django_extensions==3.1.0
-
-# data manipulation libraries
-nltk[all]
-pandas==1.2.0
-wordcloud==1.8.1
