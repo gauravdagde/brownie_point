@@ -1,3 +1,4 @@
+import json
 import logging
 # from pygooglenews import GoogleNews
 import re
@@ -29,13 +30,9 @@ from nltk.stem import WordNetLemmatizer
 from sklearn.feature_extraction.text import TfidfVectorizer
 from wordcloud import WordCloud
 
-from brownie.interview_request.models import InterviewRequest
+from brownie.interview_request.models import InterviewRequest, InterviewRequestResult
 
 # from IPython import get_ipython
-nltk.download('stopwords')
-nltk.download('averaged_perceptron_tagger')
-nltk.download('wordnet')
-nltk.download('vader_lexicon')
 
 color = sns.color_palette()
 
@@ -158,10 +155,16 @@ def get_quotes_from_html_text(string_with_quotes):
 
 
 def execute_interview_request():
+    nltk.download('stopwords')
+    nltk.download('averaged_perceptron_tagger')
+    nltk.download('wordnet')
+    nltk.download('vader_lexicon')
+
     ir_object_list = InterviewRequest.objects.filter(is_visited_by_cron=False)
     for ir_object in ir_object_list:
         user_name = ir_object.user.first_name
         company_name = ir_object.company.name
+        result_data = dict()
         try:
             post_log("Getting news from google", 'STARTED')
             attachment_file_list = []
@@ -176,8 +179,6 @@ def execute_interview_request():
                     'link': news['link'],
                     'published': news['published']
                 }
-                # print(s['entries'])
-                # break
                 summary_texts = []
                 tags = []
                 try:
@@ -187,8 +188,6 @@ def execute_interview_request():
                         dummy_text = p.text
                         tags.extend(get_tag(dummy_text))
                         if "“" in dummy_text:
-                            # print(dummy_text)
-                            # get_quotes_from_html_text(p.text.replace("“",'"').replace("”",'"'))
                             summary_texts.append(dummy_text)
                             # break
                     if summary_texts:
@@ -198,6 +197,7 @@ def execute_interview_request():
                         final_data.append(new_dict)
                 except Exception as e:
                     print(f"{e} : {news}")
+            result_data['news_data'] = final_data
             user_email = ir_object.user.email
             post_log(f"Getting news from google for {user_email}", 'COMPLETED')
             # creating a Dataframe object
@@ -300,6 +300,9 @@ def execute_interview_request():
                     ["content", "neg"]].head(50)
                 negative_df.to_csv(f'{company_name}_negative_reviews.csv', columns=["content"])
                 attachment_file_list.append(f'{company_name}_negative_reviews.csv')
+                negative_reviews_data = negative_df.to_json(orient="split")
+                parsed = json.loads(negative_reviews_data)
+                result_data['negative_reviews'] = parsed
                 post_log(f"Creating negative reviews csv for {user_name}", 'COMPLETED')
             else:
                 attachment_file_list.extend(['app_playstore.png', 'app_word_cloud.png'])
@@ -404,6 +407,7 @@ def execute_interview_request():
             </div
             '''
 
+            result_data['mail_body'] = body
             # attach the body with the msg instance
             msg.attach(MIMEText(body, 'html', 'utf-8'))
             # file_list = ['ps_image.png',file_name]
@@ -446,7 +450,7 @@ def execute_interview_request():
                     # attach the instance 'p' to instance 'msg'
                     msg.attach(p)
 
-                    # creates SMTP session
+            # creates SMTP session
             s = smtplib.SMTP('smtp.gmail.com', 587)
 
             # start TLS for security
@@ -467,8 +471,26 @@ def execute_interview_request():
             # updating object value
             ir_object.is_visited_by_cron = True
             ir_object.save()
+            irr_object = InterviewRequestResult(
+                type_form_id=ir_object.type_form_id,
+                is_published=True,
+                interview_request_id=ir_object.id,
+                company_id=ir_object.company.id,
+                user=ir_object.user.id,
+                data=result_data,
+            )
+            irr_object.save()
         except Exception as e:
             df.to_csv(f'{company_name}_all_reviews.csv')
-            traceback.print_exc()
+            # traceback.print_exc()
             post_log(f"{e} : for user : {user_name}", "ERROR")
+            irr_object = InterviewRequestResult(
+                type_form_id=ir_object.type_form_id,
+                is_published=False,
+                interview_request_id=ir_object.id,
+                company_id=ir_object.company.id,
+                user=ir_object.user.id,
+                data=result_data,
+            )
+            irr_object.save()
             continue

@@ -21,6 +21,9 @@ RUN apt-get update \
 RUN addgroup --system django \
     && adduser --system --ingroup django django
 
+ADD crontab /etc/cron.d/crontab
+RUN chmod 0644 /etc/cron.d/crontab
+
 # Requirements are installed here to ensure they will be cached.
 COPY ./requirements /requirements
 RUN pip install --no-cache-dir -r /requirements/production.txt \
