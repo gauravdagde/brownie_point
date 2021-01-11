@@ -2,9 +2,6 @@
 FROM python:3.8-slim-buster
 
 ENV PYTHONUNBUFFERED 1
-# Download orca AppImage, extract it, and make it executable under xvfb
-RUN wget https://github.com/plotly/orca/releases/download/v1.2.1/orca-1.2.1-x86_64.AppImage -O /usr/local/bin/orca
-RUN chmod +x /usr/local/bin/orca
 
 RUN apt-get update \
   # dependencies for building Python packages
@@ -14,10 +11,14 @@ RUN apt-get update \
   # Translations dependencies
   && apt-get install -y gettext \
   && apt-get install -y wget \
-  && apt-get install -y xvfb libgtk2.0-0 libgconf-2-4 \
   # cleaning up unused files
   && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
   && rm -rf /var/lib/apt/lists/*
+
+# Download orca AppImage, extract it, and make it executable under xvfb
+RUN wget https://github.com/plotly/orca/releases/download/v1.2.1/orca-1.2.1-x86_64.AppImage -O /usr/local/bin/orca
+RUN chmod +x /usr/local/bin/orca
+RUN apt-get install -y xvfb libgtk2.0-0 libgconf-2-4
 
 RUN addgroup --system django \
     && adduser --system --ingroup django django
