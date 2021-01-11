@@ -10,7 +10,7 @@ from email import encoders
 from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-
+import nltk
 import matplotlib.pyplot as plt
 import pandas as pd
 import plotly
@@ -31,6 +31,11 @@ from wordcloud import WordCloud
 
 from brownie.interview_request.models import InterviewRequestResult
 from config.settings.base import GMAIL_PASSWORD
+
+nltk.download('stopwords')
+nltk.download('averaged_perceptron_tagger')
+nltk.download('wordnet')
+nltk.download('vader_lexicon')
 
 plotly.io.orca.config.executable = '/usr/local/bin/orca'
 LOGGER = logging.getLogger('apps.runs.tasks')
