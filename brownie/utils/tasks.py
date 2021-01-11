@@ -13,6 +13,7 @@ from email.mime.text import MIMEText
 
 import matplotlib.pyplot as plt
 import pandas as pd
+import plotly
 import plotly.express as px
 import requests
 from IPython.display import HTML
@@ -31,6 +32,7 @@ from wordcloud import WordCloud
 from brownie.interview_request.models import InterviewRequestResult
 from config.settings.base import GMAIL_PASSWORD
 
+plotly.io.orca.config.executable = '/usr/local/bin/orca'
 LOGGER = logging.getLogger('apps.runs.tasks')
 DEFAULT_PATH = '/app/mail_content'
 alphabet_list = ['A', 'B', 'C', 'D', 'E', 'F']
@@ -148,9 +150,6 @@ def get_quotes_from_html_text(string_with_quotes):
 
 
 def execute_interview_request(ir_object):
-    import plotly.io as pio
-    pio.orca.config.use_xvfb = True
-    pio.orca.config.save()
     LOGGER.info(
         f'[tag:INTRUNTER10] tasks.execute_interview_request: received execute request for ir_id: {ir_object.id}')
 
@@ -259,13 +258,14 @@ def execute_interview_request(ir_object):
             # print(df.head())
             # Product Scores
             post_log(f"Histogram creation for the app reviews for {user_email}", 'STARTED')
-            # plotly.config.use_xvfb = True
             fig = px.histogram(df, x="score")
             fig.update_traces(marker_color="turquoise", marker_line_color='rgb(8,48,107)',
                               marker_line_width=1.5)
             fig.update_layout(title_text='Product Score')
             HTML(fig.to_html())
             fig.write_image(f"{DEFAULT_PATH}/{company_name}_playstore_ratings.png")
+            # plt.show()
+            # plt.savefig(f'{DEFAULT_PATH}/{company_name}_playstore_ratings.png')
             attachment_file_list.append(f"{company_name}_playstore_ratings.png")
             post_log(f"Histogram creation for the app reviews for {user_email}", 'COMPLETED')
             reviews_df = df
