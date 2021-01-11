@@ -50,10 +50,10 @@ class TypeformWebhookView(View):
                 company = Company(name=company_name)
                 company.save()
 
-            google_play_store_app_id = get_google_play_store_app_id(company_name)
-            if google_play_store_app_id:
-                company.google_play_app_id = google_play_store_app_id
-                company.save()
+            # google_play_store_app_id = get_google_play_store_app_id(company_name)
+            # if google_play_store_app_id:
+            #     company.google_play_app_id = google_play_store_app_id
+            #     company.save()
 
             job_profile_title = data['job_profile']
             job_profile = get_object_or_None(JobProfile, name=job_profile_title)
