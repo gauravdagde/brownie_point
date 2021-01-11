@@ -14,7 +14,6 @@ from email.mime.text import MIMEText
 
 import matplotlib.pyplot as plt
 import pandas as pd
-import plotly
 import plotly.express as px
 import requests
 from IPython.display import HTML
@@ -29,7 +28,8 @@ from nltk.sentiment.vader import SentimentIntensityAnalyzer
 from nltk.stem import WordNetLemmatizer
 from sklearn.feature_extraction.text import TfidfVectorizer
 from wordcloud import WordCloud
-
+import plotly.io as pio
+pio.orca.config.use_xvfb = True
 from brownie.interview_request.models import InterviewRequestResult
 from config.settings.base import GMAIL_PASSWORD
 
