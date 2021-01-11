@@ -1,7 +1,6 @@
 import json
 import logging
 # from pygooglenews import GoogleNews
-import os
 import re
 # libraries to be imported
 import smtplib
@@ -28,8 +27,7 @@ from nltk.sentiment.vader import SentimentIntensityAnalyzer
 from nltk.stem import WordNetLemmatizer
 from sklearn.feature_extraction.text import TfidfVectorizer
 from wordcloud import WordCloud
-import plotly.io as pio
-pio.orca.config.use_xvfb = True
+
 from brownie.interview_request.models import InterviewRequestResult
 from config.settings.base import GMAIL_PASSWORD
 
@@ -150,6 +148,9 @@ def get_quotes_from_html_text(string_with_quotes):
 
 
 def execute_interview_request(ir_object):
+    import plotly.io as pio
+    pio.orca.config.use_xvfb = True
+    pio.orca.config.save()
     LOGGER.info(
         f'[tag:INTRUNTER10] tasks.execute_interview_request: received execute request for ir_id: {ir_object.id}')
 
