@@ -80,7 +80,7 @@ def show_wordcloud(data, company_name, title=None):
         random_state=42
     ).generate(str(data))
 
-    fig = plt.figure(1, figsize=(20, 20))
+    fig = plt.figure(1, figsize=(10, 10))
     plt.axis('off')
     if title:
         fig.suptitle(title, fontsize=20)
