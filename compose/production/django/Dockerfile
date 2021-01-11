@@ -11,14 +11,10 @@ RUN apt-get update \
   # Translations dependencies
   && apt-get install -y gettext \
   && apt-get install -y wget \
+  && apt-get install -y xvfb libgtk2.0-0 libgconf-2-4 \
   # cleaning up unused files
   && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
   && rm -rf /var/lib/apt/lists/*
-
-# Download orca AppImage, extract it, and make it executable under xvfb
-RUN wget https://github.com/plotly/orca/releases/download/v1.2.1/orca-1.2.1-x86_64.AppImage -O /usr/local/bin/orca
-RUN chmod +x /usr/local/bin/orca
-RUN apt-get install -y xvfb libgtk2.0-0 libgconf-2-4
 
 RUN addgroup --system django \
     && adduser --system --ingroup django django
@@ -37,6 +33,9 @@ COPY --chown=django:django . /app
 WORKDIR /app
 
 #RUN python /app/manage.py collectstatic --noinput
+# Download orca AppImage, extract it, and make it executable under xvfb
+RUN wget https://github.com/plotly/orca/releases/download/v1.2.1/orca-1.2.1-x86_64.AppImage -O /usr/local/bin/orca
+RUN chmod +x /usr/local/bin/orca
 
 # To avoid the need for FUSE, extract the AppImage into a directory (name squashfs-root by default)
 #RUN cd /home && /home/orca-1.3.1.AppImage --appimage-extract
