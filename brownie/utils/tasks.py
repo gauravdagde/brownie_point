@@ -390,8 +390,6 @@ def execute_interview_request(ir_object):
               '''
         if google_play_app_id:
             body = body + f'''<div dir="ltr"><strong><u>2. End user understanding</u></strong></div>
-                  <div>This is the split of the playstore ratings, suggest you to bring up this in your talking points in the interview<br /><br /><br />This is a wordcloud of all the negative reviews, the takeaway for you is that<br />
-                  <br><img src="cid:0"><br>
                   <ul>
                   <li>A significant chunk of the bad ratings of the app are generic bad reviews, investing in talking to these consumers might uncover issues yet unknown</li>
                   <li>1 peculiar thing was the mention of cbse in a cluster of reviews, the CBSE learning experience might have some issues in particular</li>
