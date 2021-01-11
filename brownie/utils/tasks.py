@@ -257,17 +257,17 @@ def execute_interview_request(ir_object):
             # df = pd.read_csv('{DEFAULT_PATH}/Netflix_all_reviews.csv')
             # print(df.head())
             # Product Scores
-            post_log(f"Histogram creation for the app reviews for {user_email}", 'STARTED')
-            fig = px.histogram(df, x="score")
-            fig.update_traces(marker_color="turquoise", marker_line_color='rgb(8,48,107)',
-                              marker_line_width=1.5)
-            fig.update_layout(title_text='Product Score')
-            HTML(fig.to_html())
-            fig.write_image(f"{DEFAULT_PATH}/{company_name}_playstore_ratings.png")
+            # post_log(f"Histogram creation for the app reviews for {user_email}", 'STARTED')
+            # fig = px.histogram(df, x="score")
+            # fig.update_traces(marker_color="turquoise", marker_line_color='rgb(8,48,107)',
+            #                   marker_line_width=1.5)
+            # fig.update_layout(title_text='Product Score')
+            # HTML(fig.to_html())
+            # fig.write_image(f"{DEFAULT_PATH}/{company_name}_playstore_ratings.png")
             # plt.show()
             # plt.savefig(f'{DEFAULT_PATH}/{company_name}_playstore_ratings.png')
-            attachment_file_list.append(f"{company_name}_playstore_ratings.png")
-            post_log(f"Histogram creation for the app reviews for {user_email}", 'COMPLETED')
+            # attachment_file_list.append(f"{company_name}_playstore_ratings.png")
+            # post_log(f"Histogram creation for the app reviews for {user_email}", 'COMPLETED')
             reviews_df = df
             # reviews_df["review"] = reviews_df["content"].apply(lambda x: x.replace("No Negative", "").replace("No Positive", ""))
             reviews_df["is_bad_review"] = reviews_df["score"].apply(lambda x: 1 if x < 3 else 0)
